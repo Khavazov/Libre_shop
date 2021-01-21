@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-
+from drf_writable_nested import WritableNestedModelSerializer
 from rest_framework import serializers
 from cart.models import Orders, OrderItems
 from main.models import Product
@@ -27,8 +27,8 @@ class OrderItemReprSerializer(serializers.ModelSerializer):
         fields = ('product', 'quantity')
 
 
-class OrdersSerializer(serializers.ModelSerializer):
-    items = OrderItemsSerializer(many=True, write_only=True)
+class OrdersSerializer(WritableNestedModelSerializer, serializers.ModelSerializer):
+    items = OrderItemsSerializer(many=True)
     owner = serializers.ReadOnlyField(source='owner.username')
 
     class Meta:
@@ -42,6 +42,13 @@ class OrdersSerializer(serializers.ModelSerializer):
             product = item['product']
             OrderItems.objects.create(order=order, product=product, quantity=item['quantity'])
         return order
+
+    def partial_update(self, instance, validated_data):
+        items = validated_data.pop('items')
+        instance.count = validated_data.get('quantity', instance.quantity)
+        instance.save()
+        return instance
+
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)

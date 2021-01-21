@@ -5,7 +5,7 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView,
 from rest_framework.viewsets import ModelViewSet
 
 from .filters import ProductFilter
-from .models import Product, Comment, ProductImage
+from .models import Product, Comment
 from .permisssions import ProductPermission, IsCommentAuthor
 from .serializers import ProductSerializer, ProductDetailsSerializer, CreateProductSerializer, UpdateProductSerializer, \
     CommentSerializer
