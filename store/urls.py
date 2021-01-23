@@ -24,7 +24,7 @@ router.register(r'comments', CommentViewSet)
 # schema_view = get_swagger_view(title= 'Jaseci API')
 schema_view = get_schema_view(
     openapi.Info(
-        title="My Swagger",
+        title="Libre Shop",
         default_version='v1',
         description="Welcome to my Project",
         terms_of_service="https://www.jaseci.org",
